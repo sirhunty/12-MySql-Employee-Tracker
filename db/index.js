@@ -90,8 +90,24 @@ class DB {
     );
   }
 
-  
-  
+  // Find all employees in a given department, join with roles to display role titles
+  // Using left join to merge table data into given dept
+  findAllEmployeesByDepartment(departmentId) {
+    return this.connection.query(
+      "SELECT employee.id, employee.first_name, employee.last_name, role.title FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department department on role.department_id = department.id WHERE department.id = ?;",
+      departmentId
+    );
+  }
+
+  // Find all employees by manager, join with departments and roles to display titles and department names
+  // Using left join to merge table data into roles and to display titles and dept
+  findAllEmployeesByManager(managerId) {
+    return this.connection.query(
+      "SELECT employee.id, employee.first_name, employee.last_name, department.name AS department, role.title FROM employee LEFT JOIN role on role.id = employee.role_id LEFT JOIN department ON department.id = role.department_id WHERE manager_id = ?;",
+      managerId
+    );
+  }
+
 
 
 }
